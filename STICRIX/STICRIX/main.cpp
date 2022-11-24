@@ -15,7 +15,7 @@ int main(void) {
 
     cv::Mat imgOriginalScene;           // input image
 
-    imgOriginalScene = cv::imread("image333.png");         // open image
+    imgOriginalScene = cv::imread("image111.png");         // open image
 
     if (imgOriginalScene.empty()) {                             // if unable to open image
         std::cout << "error: image not read from file\n\n";     // show error message on command line
@@ -35,10 +35,13 @@ int main(void) {
     else {                                                                            // else
                                                                                       // if we get in here vector of possible plates has at leat one plate
 
-                                                                                      // sort the vector of possible plates in DESCENDING order (most number of chars to least number of chars)
-        std::sort(vectorOfPossiblePlates.begin(), vectorOfPossiblePlates.end(), PossiblePlate::sortDescendingByNumberOfChars);
+        // sort the vector of possible plates in DESCENDING order 
+        //(most number of chars to least number of chars)
+        std::sort(vectorOfPossiblePlates.begin(), vectorOfPossiblePlates.end(), 
+                                        PossiblePlate::sortDescendingByNumberOfChars);
 
-        // suppose the plate with the most recognized chars (the first plate in sorted by string length descending order) is the actual plate
+        // suppose the plate with the most recognized chars
+        //(the first plate in sorted by string length descending order) is the actual plate
         PossiblePlate licPlate = vectorOfPossiblePlates.front();
 
         cv::imshow("imgPlate", licPlate.imgPlate);            // show crop of plate and threshold of plate
@@ -51,7 +54,7 @@ int main(void) {
 
         drawRedRectangleAroundPlate(imgOriginalScene, licPlate);                // draw red rectangle around plate
 
-        std::cout << std::endl << "Numarul de inmatriculare detectat : " << "I"+licPlate.strChars << std::endl;     // write license plate text to std out
+        std::cout << std::endl << "Numarul de inmatriculare detectat : " << licPlate.strChars << std::endl;     // write license plate text to std out
        
 
         writeLicensePlateCharsOnImage(imgOriginalScene, licPlate);              // write license plate text on the image
@@ -104,7 +107,7 @@ void writeLicensePlateCharsOnImage(cv::Mat &imgOriginalScene, PossiblePlate &lic
     ptLowerLeftTextOrigin.y = (int)(ptCenterOfTextArea.y + (textSize.height / 2));          // based on the text area center, width, and height
 
                                                                                             // write the text on the image
-    cv::putText(imgOriginalScene, "I"+licPlate.strChars, ptLowerLeftTextOrigin, intFontFace, dblFontScale, SCALAR_YELLOW, intFontThickness);
+    cv::putText(imgOriginalScene, licPlate.strChars, ptLowerLeftTextOrigin, intFontFace, dblFontScale, SCALAR_YELLOW, intFontThickness);
 }
 
 
